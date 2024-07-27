@@ -115,6 +115,7 @@ fun GoToStep3Button(
     BottomAppBar(modifier = modifier) {
         Button(
             onClick = onClick,
+            shape = MaterialTheme.shapes.medium,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)

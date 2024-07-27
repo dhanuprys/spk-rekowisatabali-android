@@ -164,6 +164,7 @@ fun CriteriaButton(
     Column(modifier = modifier) {
         Button(
             onClick = navigateToStep2A,
+            shape = MaterialTheme.shapes.medium,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Tentukan dengan template")

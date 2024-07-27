@@ -96,6 +96,7 @@ fun Step3Body(
 
         Button(
             onClick = navigateToResult,
+            shape = MaterialTheme.shapes.medium,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = "Dapatkan rekomendasi")
