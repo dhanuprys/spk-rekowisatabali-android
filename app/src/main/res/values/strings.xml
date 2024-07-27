@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Reko Wisata Bali</string>
+    <string name="select_city">Pilih Kota</string>
+    <string name="select_template">Pilih Template</string>
+    <string name="select_criteria">Tentukan Kriteria</string>
+    <string name="select_limit">Jumlah hasil maksimal</string>
+    <string name="select_report_types">Tampilkan dalam bentuk</string>
+    <string name="select_report">Pilih Tampilan</string>
+    <string name="recommendation_result">Rekomendasi</string>
+</resources>
