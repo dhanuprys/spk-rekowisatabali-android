@@ -1,6 +1,7 @@
 package com.dedan.rekowisatabali.ui.screen.calculationform.result
 
 import android.util.Log
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -33,8 +34,11 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -287,17 +291,29 @@ fun GraphReportView(
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     BoxWithConstraints {
-                        val graphWidth = remap(
-                            recommendation.rank.toFloat() - 1,
-                            recommendations.size.toFloat(),
-                            0f,
-                            0f,
-                            maxWidth.value
+                        maxHeight
+                        var currentWidth by remember { mutableFloatStateOf(0f) }
+                        val graphWidth by animateFloatAsState(
+                            targetValue = currentWidth,
+                            animationSpec = androidx.compose.animation.core.tween(
+                                durationMillis = 500
+                            ),
+                            label = ""
                         )
+
+                        LaunchedEffect(recommendations) {
+                            currentWidth = remap(
+                                recommendation.rank.toFloat() - 1,
+                                recommendations.size.toFloat(),
+                                0f,
+                                0f,
+                                maxWidth.value
+                            )
+                        }
 
                         Box(
                             modifier = Modifier
-                                .height(16.dp)
+                                .height(14.dp)
                                 .width(graphWidth.dp)
                                 .background(
                                     color = MaterialTheme.colorScheme.primary,
