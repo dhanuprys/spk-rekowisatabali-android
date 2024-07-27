@@ -52,6 +52,8 @@ import com.dedan.rekowisatabali.util.remap
 import com.dedan.rekowisatabali.ui.screen.calculationform.ResultUiState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dedan.rekowisatabali.R
+import com.dedan.rekowisatabali.ui.layout.DataEmpty
+import com.dedan.rekowisatabali.ui.layout.PageError
 import com.dedan.rekowisatabali.ui.layout.PageLoading
 import com.dedan.rekowisatabali.ui.layout.SpkAppBar
 import com.dedan.rekowisatabali.ui.navigation.NavigationDestination
@@ -121,15 +123,20 @@ fun ResultBody(
             PageLoading(modifier = Modifier.fillMaxSize())
 
         is ResultUiState.Error ->
-            Text("Error")
+            PageError(modifier = Modifier.fillMaxSize())
 
-        is ResultUiState.Success ->
-            ResultList(
-                withGraphReport = optionsUiState.withGraphReport,
-                withTableReport = optionsUiState.withTableReport,
-                recommendations = uiState.data,
-                modifier = modifier.padding(horizontal = 16.dp)
-            )
+        is ResultUiState.Success -> {
+            if (uiState.data.isEmpty()) {
+                DataEmpty(modifier = modifier.fillMaxSize())
+            } else {
+                ResultList(
+                    withGraphReport = optionsUiState.withGraphReport,
+                    withTableReport = optionsUiState.withTableReport,
+                    recommendations = uiState.data,
+                    modifier = modifier.padding(horizontal = 16.dp)
+                )
+            }
+        }
     }
 }
 

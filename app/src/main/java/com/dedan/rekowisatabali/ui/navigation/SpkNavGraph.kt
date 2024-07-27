@@ -115,7 +115,7 @@ fun SpkNavHost(
                 viewModel = calculationFormViewModel,
                 navigateUp = { navController.navigateUp() },
                 backToHome = {
-                    navController.navigate(HomeDestination.route)
+                    navController.popBackStack(HomeDestination.route, inclusive = false)
                     calculationFormViewModel.resetCalculation()
                 }
             )

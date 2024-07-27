@@ -35,6 +35,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dedan.rekowisatabali.R
 import com.dedan.rekowisatabali.model.City
 import com.dedan.rekowisatabali.ui.AppViewModel
+import com.dedan.rekowisatabali.ui.layout.DataEmpty
+import com.dedan.rekowisatabali.ui.layout.PageError
 import com.dedan.rekowisatabali.ui.layout.PageLoading
 import com.dedan.rekowisatabali.ui.layout.SpkAppBar
 import com.dedan.rekowisatabali.ui.navigation.NavigationDestination
@@ -97,22 +99,28 @@ fun Step1Body(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxSize()) {
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .weight(1f)) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        ) {
             when (uiState) {
                 is CityUiState.Error ->
-                    Text("Error")
+                    PageError(modifier = Modifier.fillMaxSize())
 
                 is CityUiState.Loading ->
                     PageLoading(modifier = Modifier.fillMaxSize())
 
                 is CityUiState.Success ->
-                    CityList(
-                        cities = uiState.data,
-                        selectedCities = selectedCities,
-                        toggleCityId = toggleCityId,
-                    )
+                    if (uiState.data.isEmpty()) {
+                        DataEmpty(modifier = Modifier.fillMaxSize())
+                    } else {
+                        CityList(
+                            cities = uiState.data,
+                            selectedCities = selectedCities,
+                            toggleCityId = toggleCityId,
+                        )
+                    }
             }
         }
 

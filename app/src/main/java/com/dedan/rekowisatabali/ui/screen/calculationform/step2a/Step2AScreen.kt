@@ -23,6 +23,8 @@ import coil.compose.AsyncImage
 import com.dedan.rekowisatabali.R
 import com.dedan.rekowisatabali.model.RecommendationTemplate
 import com.dedan.rekowisatabali.ui.AppViewModel
+import com.dedan.rekowisatabali.ui.layout.DataEmpty
+import com.dedan.rekowisatabali.ui.layout.PageError
 import com.dedan.rekowisatabali.ui.layout.PageLoading
 import com.dedan.rekowisatabali.ui.layout.SpkAppBar
 import com.dedan.rekowisatabali.ui.navigation.NavigationDestination
@@ -73,15 +75,21 @@ fun Step2ABody(
 ) {
     when (uiState) {
         is RecommendationTemplateUiState.Error ->
-            Text("Error")
+            PageError(modifier = Modifier.fillMaxSize())
+
         is RecommendationTemplateUiState.Loading ->
             PageLoading(modifier = Modifier.fillMaxSize())
+
         is RecommendationTemplateUiState.Success ->
-            TemplateList(
-                templates = uiState.data,
-                onTemplateSelect = onTemplateSelect,
-                modifier = modifier.padding(16.dp)
-            )
+            if (uiState.data.isEmpty()) {
+                DataEmpty(modifier = Modifier.fillMaxSize())
+            } else {
+                TemplateList(
+                    templates = uiState.data,
+                    onTemplateSelect = onTemplateSelect,
+                    modifier = modifier.padding(16.dp)
+                )
+            }
     }
 }
 
