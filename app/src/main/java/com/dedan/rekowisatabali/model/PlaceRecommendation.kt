@@ -9,3 +9,10 @@ data class PlaceRecommendation(
     val rank: Int,
     val score: Float
 )
+
+fun PlaceRecommendation.toPlaceRecommendationHistory(): PlaceRecommendationHistory =
+    PlaceRecommendationHistory(
+        id = id,
+        name = name,
+        cityName = "hmmmm"
+    )

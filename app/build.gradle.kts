@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
 
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.23"
+    id("com.google.devtools.ksp") version "1.9.20-1.0.14"
 }
 
 android {
@@ -52,6 +53,13 @@ android {
 }
 
 dependencies {
+    val room_version = "2.6.1"
+
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+
     implementation("androidx.lifecycle:lifecycle-runtime-compose-android:2.8.3")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")

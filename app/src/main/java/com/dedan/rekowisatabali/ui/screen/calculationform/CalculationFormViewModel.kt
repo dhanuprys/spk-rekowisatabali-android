@@ -6,16 +6,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dedan.rekowisatabali.data.PlaceRepository
+import com.dedan.rekowisatabali.data.repository.PlaceRepository
+import com.dedan.rekowisatabali.data.repository.RecommendationHistoryRepository
 import com.dedan.rekowisatabali.model.City
 import com.dedan.rekowisatabali.model.PlaceRecommendation
 import com.dedan.rekowisatabali.model.RecommendationMetric
 import com.dedan.rekowisatabali.model.RecommendationTemplate
 import com.dedan.rekowisatabali.model.RecommendationTemplateRequest
+import com.dedan.rekowisatabali.model.toPlaceRecommendationHistory
 import kotlinx.coroutines.launch
 
 class CalculationFormViewModel(
-    private val placeRepository: PlaceRepository
+    private val placeRepository: PlaceRepository,
+    private val recommendationHistoryRepository: RecommendationHistoryRepository
 ) : ViewModel() {
     private var calculationType: CalculationType by mutableStateOf(CalculationType.Unknown)
     private var recommendationMetric by mutableStateOf(generateDefaultMetric())
@@ -66,6 +69,7 @@ class CalculationFormViewModel(
                             )
                         )
 
+                        storeRecommendationHistory(recommendations)
                         ResultUiState.Success(recommendations)
                     }
                     is CalculationType.Template -> {
@@ -78,7 +82,7 @@ class CalculationFormViewModel(
                             )
                         )
 
-                        Log.d("CalculationFormViewModel", "recommendations: $recommendations")
+                        storeRecommendationHistory(recommendations)
                         ResultUiState.Success(recommendations)
                     }
 
@@ -159,6 +163,19 @@ class CalculationFormViewModel(
             selectedCities - cityId
         } else {
             selectedCities + cityId
+        }
+    }
+
+    private fun storeRecommendationHistory(
+        recommendations: List<PlaceRecommendation>,
+        force: Boolean = false
+    ) {
+        if (!force && recommendations.isEmpty()) return
+
+        viewModelScope.launch {
+            recommendationHistoryRepository.overwriteAll(
+                recommendations.map { it.toPlaceRecommendationHistory() }
+            )
         }
     }
 }

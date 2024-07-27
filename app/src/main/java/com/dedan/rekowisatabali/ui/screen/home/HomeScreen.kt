@@ -1,5 +1,6 @@
 package com.dedan.rekowisatabali.ui.screen.home
 
+import PulsatingBackgroundButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,6 +19,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -31,6 +33,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,6 +50,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.dedan.rekowisatabali.R
+import com.dedan.rekowisatabali.model.PlaceRecommendationHistory
+import com.dedan.rekowisatabali.ui.AppViewModel
+import com.dedan.rekowisatabali.ui.layout.DataEmpty
 import com.dedan.rekowisatabali.ui.layout.SpkAppBar
 import com.dedan.rekowisatabali.ui.navigation.NavigationDestination
 import com.dedan.rekowisatabali.ui.theme.RekoWisataBaliTheme
@@ -59,13 +65,19 @@ object HomeDestination : NavigationDestination {
 @Composable
 fun HomeScreen(
     navigateToCalculationForm: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
+        factory = AppViewModel.Factory
+    )
 ) {
+    val placeRecommendationHistory = viewModel.recommendationHistory.collectAsState()
+
     Scaffold(
 //        topBar = { SpkAppBar(HomeDestination.titleRes) },
         modifier = modifier
     ) { innerPadding ->
         HomeBody(
+            placeRecommendationHistory = placeRecommendationHistory.value,
             navigateToCalculationForm = navigateToCalculationForm,
             modifier = modifier.padding(innerPadding)
         )
@@ -74,12 +86,13 @@ fun HomeScreen(
 
 @Composable
 fun HomeBody(
+    placeRecommendationHistory: List<PlaceRecommendationHistory>,
     navigateToCalculationForm: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var height by remember { mutableStateOf(0) }
 
-    Column {
+    Column(modifier = modifier) {
         Box(
             modifier = Modifier.background(Color.Black)
         ) {
@@ -90,17 +103,6 @@ fun HomeBody(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.height(190.dp)
             )
-//            Text(
-//                text = "Kemana anda\nharus pergi?",
-//                fontSize = 34.sp,
-//                lineHeight = 34.sp,
-//                color = Color.White.copy(
-//                    alpha = 0.8f
-//                ),
-//                modifier = Modifier
-//                    .zIndex(1f)
-//                    .padding(16.dp)
-//            )
         }
 
         Card(
@@ -121,11 +123,22 @@ fun HomeBody(
             Column(
                 modifier = Modifier.padding(16.dp)
             ) {
-                Button(
+                Text(
+                    text = "Rekomendasi terakhir",
+                    style = MaterialTheme.typography.titleLarge
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                LastRecommendations(
+                    placeRecommendationHistory,
+                    modifier = Modifier.weight(1f)
+                )
+
+                PulsatingBackgroundButton(
                     onClick = navigateToCalculationForm,
                     shape = MaterialTheme.shapes.medium,
                     contentPadding = PaddingValues(15.dp),
                     modifier = Modifier.fillMaxWidth()
+                        .padding(top = 16.dp)
                 ) {
                     Text("Dapatkan rekomendasi sekarang")
                     Spacer(modifier = Modifier.weight(1f))
@@ -134,13 +147,6 @@ fun HomeBody(
                         contentDescription = null
                     )
                 }
-                Spacer(modifier = Modifier.height(38.dp))
-                Text(
-                    text = "Rekomendasi terakhir",
-                    style = MaterialTheme.typography.titleMedium
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                LastRecommendations()
             }
         }
     }
@@ -152,70 +158,44 @@ fun HomeBodyPreview() {
     RekoWisataBaliTheme {
         HomeBody(
             navigateToCalculationForm = {},
+            placeRecommendationHistory = emptyList(),
             modifier = Modifier.padding(16.dp)
         )
     }
 }
 
 @Composable
-fun LastRecommendations() {
+fun LastRecommendations(
+    placeRecommendationHistory: List<PlaceRecommendationHistory>,
+    modifier: Modifier = Modifier
+) {
+    if (placeRecommendationHistory.isEmpty()) {
+        DataEmpty(modifier = modifier.fillMaxWidth())
+        return
+    }
+
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = modifier
     ) {
-        item {
-            TopPlaceCard()
+        items(placeRecommendationHistory) { history ->
+            TopPlaceCard(
+                recommendation = history,
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
         }
-        item {
-            TopPlaceCard()
-        }
-        item {
-            TopPlaceCard()
-        }
-        item {
-            TopPlaceCard()
-        }
-        item {
-            TopPlaceCard()
-        }
-        item {
-            TopPlaceCard()
-        }
-        item {
-            TopPlaceCard()
-        }
-        item {
-            TopPlaceCard()
-        }
-        item {
-            TopPlaceCard()
-        }
-        item {
-            TopPlaceCard()
-        }
-        item {
-            TopPlaceCard()
-        }
-        item {
-            TopPlaceCard()
-        }
-        item {
-            TopPlaceCard()
-        }
-        item {
-            TopPlaceCard()
-        }
-        item {
-            TopPlaceCard()
-        }
-
-
     }
 }
 
 @Composable
-fun TopPlaceCard(modifier: Modifier = Modifier) {
+fun TopPlaceCard(
+    recommendation: PlaceRecommendationHistory,
+    modifier: Modifier = Modifier
+) {
     Row(
-        modifier = modifier.clickable {}
+        modifier = modifier
+            .clickable {}
             .padding(vertical = 8.dp)
     ) {
        Image(
@@ -223,18 +203,18 @@ fun TopPlaceCard(modifier: Modifier = Modifier) {
            contentDescription = null,
            contentScale = ContentScale.Crop,
            modifier = Modifier
-               .height(80.dp)
-               .width(80.dp)
+               .height(70.dp)
+               .width(70.dp)
                .clip(MaterialTheme.shapes.medium)
         )
         Spacer(modifier = Modifier.width(16.dp))
         Column {
             Text(
-                text = "Klungkung Beach mother fucker dkdkdk dkdk",
+                text = recommendation.name,
                 modifier = Modifier
             )
             Text(
-                text = "Kabupaten Bueleleng",
+                text = recommendation.cityName,
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.SemiBold
             )

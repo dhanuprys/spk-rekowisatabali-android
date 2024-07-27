@@ -8,6 +8,6 @@ class SpkApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        container = com.dedan.rekowisatabali.container.DefaultAppContainer()
+        container = com.dedan.rekowisatabali.container.DefaultAppContainer(this)
     }
 }
