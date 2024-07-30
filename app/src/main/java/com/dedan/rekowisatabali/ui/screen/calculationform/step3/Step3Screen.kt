@@ -181,7 +181,9 @@ fun LimitRadio(
         }
     ) {
         RadioButton(selected = selected, onClick = onClick)
-        Text(text = limit.toString())
+        Text(
+            text = "${limit.toString()} teratas"
+        )
     }
 }
 
