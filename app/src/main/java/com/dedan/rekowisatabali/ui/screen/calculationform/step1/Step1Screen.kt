@@ -126,6 +126,7 @@ fun Step1Body(
         }
 
         CriteriaButton(
+            enabled = selectedCities.isNotEmpty(),
             navigateToStep2A = navigateToStep2A,
             navigateToStep2B = navigateToStep2B,
             modifier = Modifier
@@ -160,12 +161,14 @@ fun Step1BodyPreview() {
 fun CriteriaButton(
     navigateToStep2A: () -> Unit,
     navigateToStep2B: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
 ) {
     Column(modifier = modifier) {
         Button(
             onClick = navigateToStep2A,
             shape = MaterialTheme.shapes.medium,
+            enabled = enabled,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Tentukan dengan template")
@@ -173,14 +176,35 @@ fun CriteriaButton(
         Spacer(modifier = Modifier.padding(4.dp))
         Button(
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Transparent
+                containerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent,
             ),
             onClick = navigateToStep2B,
+            enabled = enabled,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
                 "Tentukan secara manual",
-                color = MaterialTheme.colorScheme.primary
+                color = if (enabled) MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.surfaceVariant
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CriteriaButtonPreview() {
+    RekoWisataBaliTheme {
+        Column(modifier = Modifier.padding(16.dp)) {
+            CriteriaButton(
+                navigateToStep2A = {},
+                navigateToStep2B = {}
+            )
+            CriteriaButton(
+                enabled = false,
+                navigateToStep2A = {},
+                navigateToStep2B = {}
             )
         }
     }
