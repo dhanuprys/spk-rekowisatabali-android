@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -35,15 +36,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -73,7 +78,7 @@ fun HomeScreen(
     val placeRecommendationHistory = viewModel.recommendationHistory.collectAsState()
 
     Scaffold(
-//        topBar = { SpkAppBar(HomeDestination.titleRes) },
+        topBar = { SpkAppBar(HomeDestination.titleRes) },
         modifier = modifier
     ) { innerPadding ->
         HomeBody(
@@ -90,7 +95,7 @@ fun HomeBody(
     navigateToCalculationForm: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var height by remember { mutableStateOf(0) }
+    var height by remember { mutableIntStateOf(0) }
 
     Column(modifier = modifier) {
         Box(
@@ -98,7 +103,7 @@ fun HomeBody(
         ) {
             Image(
                 painter = painterResource(id = R.drawable.home_banner),
-                alpha = 0.7f,
+                alpha = 0.45f,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.height(190.dp)
@@ -110,8 +115,8 @@ fun HomeBody(
                 containerColor = MaterialTheme.colorScheme.background
             ),
             shape = RoundedCornerShape(
-                topStart = 14.dp,
-                topEnd = 14.dp,
+                topStart = 24.dp,
+                topEnd = 24.dp,
                 bottomStart = 0.dp,
                 bottomEnd = 0.dp
             ),
@@ -119,13 +124,12 @@ fun HomeBody(
                 .fillMaxSize()
                 .offset(y = (-20).dp)
         ) {
-            Spacer(modifier = Modifier.height(8.dp))
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
+            Spacer(modifier = Modifier.height(17.dp))
+            Column {
                 Text(
                     text = "Rekomendasi terakhir",
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(16.dp)
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 LastRecommendations(
@@ -138,7 +142,7 @@ fun HomeBody(
                     shape = MaterialTheme.shapes.medium,
                     contentPadding = PaddingValues(15.dp),
                     modifier = Modifier.fillMaxWidth()
-                        .padding(top = 16.dp)
+                        .padding(start = 16.dp, end = 16.dp, top = 16.dp)
                 ) {
                     Text("Dapatkan rekomendasi sekarang")
                     Spacer(modifier = Modifier.weight(1f))
@@ -178,8 +182,9 @@ fun LastRecommendations(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = modifier
     ) {
-        items(placeRecommendationHistory) { history ->
+        itemsIndexed(placeRecommendationHistory) { index, history ->
             TopPlaceCard(
+                rank = index + 1,
                 recommendation = history,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -191,22 +196,33 @@ fun LastRecommendations(
 @Composable
 fun TopPlaceCard(
     recommendation: PlaceRecommendationHistory,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    rank: Int = 1
 ) {
     Row(
+        verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .clickable {}
-            .padding(vertical = 8.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
-       Image(
-           painter = painterResource(id = R.drawable.home_banner),
-           contentDescription = null,
-           contentScale = ContentScale.Crop,
-           modifier = Modifier
-               .height(70.dp)
-               .width(70.dp)
-               .clip(MaterialTheme.shapes.medium)
-        )
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+               .height(50.dp)
+               .width(50.dp)
+               .background(
+                   color = MaterialTheme.colorScheme.inverseOnSurface,
+                   shape = MaterialTheme.shapes.medium
+               )
+        ) {
+            Text(
+                text = rank.toString(),
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
         Spacer(modifier = Modifier.width(16.dp))
         Column {
             Text(
@@ -216,7 +232,7 @@ fun TopPlaceCard(
             Text(
                 text = recommendation.cityName,
                 style = MaterialTheme.typography.bodySmall,
-                fontWeight = FontWeight.SemiBold
+                fontStyle = FontStyle.Italic
             )
         }
     }

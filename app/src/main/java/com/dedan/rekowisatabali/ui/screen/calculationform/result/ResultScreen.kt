@@ -152,7 +152,7 @@ fun ResultBodyPreview() {
         ResultBody(
             uiState = ResultUiState.Success(
                 listOf(
-                    PlaceRecommendation(1, "Hello 1", 1, 0.9f)
+                    PlaceRecommendation(1, "Hello 1", "City Name", 1, 0.9f)
                 )
             ),
             optionsUiState = ReportOptionsUiState(),
@@ -331,12 +331,12 @@ fun GraphReportView(
 @Composable
 fun GraphReportViewPreview() {
     val recommendations = listOf(
-        PlaceRecommendation(1, "Hello 1", 1, 0.999f),
-        PlaceRecommendation(1, "Hello 2", 4, 0.999f),
-        PlaceRecommendation(1, "Hello 3", 3, 0.999f),
-        PlaceRecommendation(1, "Hello 4", 2, 0.999f),
-        PlaceRecommendation(1, "Hello 4", 5, 0.999f),
-        PlaceRecommendation(1, "Hello 4", 6, 0.999f)
+        PlaceRecommendation(1, "Hello 1", "City name", 1, 0.999f),
+        PlaceRecommendation(1, "Hello 2", "City name", 4, 0.999f),
+        PlaceRecommendation(1, "Hello 3", "City name", 3, 0.999f),
+        PlaceRecommendation(1, "Hello 4", "City name", 2, 0.999f),
+        PlaceRecommendation(1, "Hello 4", "City name", 5, 0.999f),
+        PlaceRecommendation(1, "Hello 4", "City name", 6, 0.999f)
     )
 
     RekoWisataBaliTheme {
