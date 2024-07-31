@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.dedan.rekowisatabali.ui.screen.info.InfoDestination
 import com.dedan.rekowisatabali.ui.screen.home.HomeDestination
-import com.dedan.rekowisatabali.ui.screen.info.TutorialDestination
+import com.dedan.rekowisatabali.ui.screen.tutorial.TutorialDestination
 
 @Composable
 fun SpkAppDrawer(

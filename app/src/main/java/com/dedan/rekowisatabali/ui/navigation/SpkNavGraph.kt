@@ -21,6 +21,10 @@ import com.dedan.rekowisatabali.ui.screen.calculationform.step3.Step3Destination
 import com.dedan.rekowisatabali.ui.screen.calculationform.step3.Step3Screen
 import com.dedan.rekowisatabali.ui.screen.home.HomeDestination
 import com.dedan.rekowisatabali.ui.screen.home.HomeScreen
+import com.dedan.rekowisatabali.ui.screen.info.InfoDestination
+import com.dedan.rekowisatabali.ui.screen.info.InfoScreen
+import com.dedan.rekowisatabali.ui.screen.tutorial.TutorialDestination
+import com.dedan.rekowisatabali.ui.screen.tutorial.TutorialScreen
 
 @Composable
 fun SpkNavHost(
@@ -48,6 +52,22 @@ fun SpkNavHost(
                     calculationFormViewModel.getRecommendationTemplates()
                 }
             )
+        }
+
+        composable(
+            route = TutorialDestination.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) {
+            TutorialScreen(navigateUp = { navController.navigateUp() })
+        }
+
+        composable(
+            route = InfoDestination.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) {
+           InfoScreen(navigateUp = { navController.navigateUp() })
         }
 
         composable(
