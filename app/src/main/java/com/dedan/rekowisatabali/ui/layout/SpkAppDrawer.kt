@@ -11,6 +11,8 @@ import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import com.dedan.rekowisatabali.R
 import com.dedan.rekowisatabali.ui.screen.info.InfoDestination
 import com.dedan.rekowisatabali.ui.screen.home.HomeDestination
 import com.dedan.rekowisatabali.ui.screen.tutorial.TutorialDestination
@@ -34,7 +36,7 @@ fun SpkAppDrawer(
         )
         NavigationDrawerItem(
             icon = {
-//                Icon(painter = painterResource(id = R.drawable.ic_note), contentDescription = null)
+                Icon(painter = painterResource(id = R.drawable.ic_tutorial), contentDescription = null)
             },
             label = {
                 Text("Tutorial")
