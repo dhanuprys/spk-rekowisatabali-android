@@ -24,7 +24,8 @@ import com.dedan.rekowisatabali.ui.screen.home.HomeScreen
 
 @Composable
 fun SpkNavHost(
-    navController: NavHostController
+    navController: NavHostController,
+    onDrawerOpenRequest: () -> Unit,
 ) {
     val calculationFormViewModel: CalculationFormViewModel = viewModel(
         factory = AppViewModel.Factory
@@ -40,6 +41,7 @@ fun SpkNavHost(
             exitTransition = { ExitTransition.None }
         ) {
             HomeScreen(
+                onDrawerOpenRequest = onDrawerOpenRequest,
                 navigateToCalculationForm = {
                     navController.navigate(Step1Destination.route)
                     calculationFormViewModel.getCities()

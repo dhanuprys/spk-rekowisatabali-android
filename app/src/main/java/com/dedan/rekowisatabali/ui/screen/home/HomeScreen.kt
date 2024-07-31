@@ -69,6 +69,7 @@ object HomeDestination : NavigationDestination {
 
 @Composable
 fun HomeScreen(
+    onDrawerOpenRequest: () -> Unit,
     navigateToCalculationForm: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
@@ -78,7 +79,13 @@ fun HomeScreen(
     val placeRecommendationHistory = viewModel.recommendationHistory.collectAsState()
 
     Scaffold(
-        topBar = { SpkAppBar(HomeDestination.titleRes) },
+        topBar = {
+            SpkAppBar(
+                titleRes = HomeDestination.titleRes,
+                withDrawer = true,
+                onDrawerOpenRequest = onDrawerOpenRequest
+            )
+        },
         modifier = modifier
     ) { innerPadding ->
         HomeBody(
