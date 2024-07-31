@@ -19,6 +19,7 @@ fun PulsatingBackgroundButton(
     modifier: Modifier = Modifier,
     shape: Shape = ButtonDefaults.shape,
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    animationEnabled: Boolean = true,
     content: @Composable () -> Unit = {}
 ) {
     // Define two colors for the pulsating effect
@@ -34,11 +35,13 @@ fun PulsatingBackgroundButton(
         animationSpec = tween(durationMillis = 2000) // Duration of the animation
     )
 
-    // Switch colors back and forth
-    LaunchedEffect(Unit) {
-        while (true) {
-            delay(1000) // Delay between color changes
-            isInitialColor = !isInitialColor
+    if (animationEnabled) {
+        // Switch colors back and forth
+        LaunchedEffect(Unit) {
+            while (true) {
+                delay(1000) // Delay between color changes
+                isInitialColor = !isInitialColor
+            }
         }
     }
 

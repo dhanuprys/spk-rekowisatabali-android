@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,10 +31,13 @@ fun DataEmpty(
         Image(
             painter = painterResource(R.drawable.ic_not_found),
             contentDescription = null,
-            modifier = Modifier.size(250.dp)
+            modifier = Modifier.size(200.dp)
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "Data tidak ditemukan")
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "Data tidak ditemukan",
+            color = MaterialTheme.colorScheme.surfaceVariant
+        )
     }
 }
 

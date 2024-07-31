@@ -110,10 +110,10 @@ fun HomeBody(
         ) {
             Image(
                 painter = painterResource(id = R.drawable.home_banner),
-                alpha = 0.45f,
+                alpha = 0.8f,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.height(190.dp)
+                modifier = Modifier.height(180.dp)
             )
         }
 
@@ -146,6 +146,7 @@ fun HomeBody(
 
                 PulsatingBackgroundButton(
                     onClick = navigateToCalculationForm,
+                    animationEnabled = placeRecommendationHistory.isEmpty(),
                     shape = MaterialTheme.shapes.medium,
                     contentPadding = PaddingValues(15.dp),
                     modifier = Modifier.fillMaxWidth()
