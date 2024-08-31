@@ -400,6 +400,11 @@ fun TableReportView(
                             text = it.name,
                             style = MaterialTheme.typography.bodySmall
                         )
+                        Text(
+                            text = "(%.3f)".format(it.score),
+                            color = MaterialTheme.colorScheme.surfaceTint,
+                            style = MaterialTheme.typography.bodySmall
+                        )
                     }
                 }
             }
