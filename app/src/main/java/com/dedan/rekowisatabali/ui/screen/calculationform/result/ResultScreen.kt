@@ -285,10 +285,19 @@ fun GraphReportView(
         ) {
             recommendations.forEach { recommendation ->
                 Column(modifier = Modifier.fillMaxWidth()) {
-                    Text(
-                        text = recommendation.name,
-                        style = MaterialTheme.typography.bodySmall
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = recommendation.name,
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                        Text(
+                            text = "(%.3f)".format(recommendation.score),
+                            color = MaterialTheme.colorScheme.surfaceTint,
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
                     Spacer(modifier = Modifier.height(4.dp))
                     BoxWithConstraints {
                         maxHeight
